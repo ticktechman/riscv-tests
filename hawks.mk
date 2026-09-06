@@ -20,6 +20,7 @@ $(hex_dir)/%.hex:$(isa_dir)/%
 	@printf "%40s : %s\n" $@ $<
 	@$(eval hex_data := $(@:.hex=.data))
 	@[[ -d $(hex_dir) ]] || mkdir $(hex_dir)
+	@cp $< $(hex_dir)/
 	@riscv-none-elf-objcopy -O verilog --verilog-data-width=1 -j .text.init --change-section-address .text.init=0 $< $@ >/dev/null
 	@riscv-none-elf-objcopy -O verilog --verilog-data-width=1 -j .data --change-section-address .data=0 --no-change-warnings $< $(hex_data) >/dev/null
 	@[[ -s $(hex_data) ]] || rm -f $(hex_data)
